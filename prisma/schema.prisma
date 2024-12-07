@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // Ensure your `DATABASE_URL` environment variable is set correctly
+}
+
+model User {
+  id    String     @id @default(uuid())
+  name  String
+  email String  @unique
+  password String
+  birthDate DateTime
+  about String
+  type String
+  address String
+  rating String
+  profilePicture String
+  wishList Wish[]
+}
+model Property{
+  id String @id @default(uuid())
+  category Category @relation(fields: [categoryID],references: [id])
+  categoryID String
+  status  String
+  description  String
+  title  String
+  address String 
+  wishlist Wish[]
+}
+
+model Category{
+  id String @id @default(uuid())
+  categoryName String
+  Properties  Property[]
+}
+
+model Wish{
+  wishNumber String  @id @default(uuid())
+  buyer  User   @relation(fields: [buyerID],references: [id])
+  buyerID String
+  property Property @relation(fields: [propertyID],references: [id])
+  propertyID   String
+  wishDate  DateTime
+}
