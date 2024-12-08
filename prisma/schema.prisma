@@ -9,27 +9,38 @@ datasource db {
 
 model User {
   id    String     @id @default(uuid())
-  name  String
+  name  String?
   email String  @unique
   password String
-  birthDate DateTime
-  about String
+  birthDate DateTime?
+  about String?
   type String
-  address String
-  rating String
-  profilePicture String
+  address String?
+  
+  profilePicture String?
   wishList Wish[]
+  messagesSended Message[]  @relation("messagesSended")
+  messagesReceived Message[] @relation("messagesReceived")
+  reviews Review[]
+  ads Ad[]
+  buyOrders Buy[]
 }
 model Property{
   id String @id @default(uuid())
   category Category @relation(fields: [categoryID],references: [id])
   categoryID String
   status  String
-  description  String
+  description  String?
   title  String
   address String 
   wishlist Wish[]
-}
+  images String[]
+  amenities String[] 
+  roomsDetails String[]
+  review Review[]
+  ads Ad[]
+   buyOrders Buy[]
+  }
 
 model Category{
   id String @id @default(uuid())
@@ -44,4 +55,46 @@ model Wish{
   property Property @relation(fields: [propertyID],references: [id])
   propertyID   String
   wishDate  DateTime
+}
+
+model Message{
+  messageNumber String @id @default(uuid())
+  sender User @relation("messagesSended",fields: [senderID],references: [id])
+  senderID String
+  receiver User @relation("messagesReceived",fields: [receiverID],references: [id])
+  receiverID String
+  messageContent String
+  messageDate DateTime @default(now())
+}
+
+model Review{
+  reviewNumber String @id @default(uuid())
+  reviewer User @relation(fields: [reviewerID],references: [id])
+  reviewerID String
+  reviewerRating String
+  reviewDate DateTime @default(now())
+  reviewContent String
+  property Property @relation(fields: [propertyID],references: [id])
+  propertyID String
+  apply Buy @relation(fields: [applyNumber],references: [id])
+  applyNumber String
+}
+
+model Ad{
+  id String @id @default(uuid())
+ negotiationPrice String?
+ date DateTime @default(now())
+  property Property @relation(fields: [propertyID],references: [id])
+  propertyID String
+   receiver User @relation(fields: [receiverID],references: [id])
+  receiverID String
+}
+model Buy{
+  id String @id @default(uuid())
+  buyer User @relation(fields: [buyerID],references: [id])
+  buyerID String
+  property Property @relation(fields: [propertyID],references: [id])
+  propertyID String
+  date DateTime @default(now())
+  applyNumber Review[]
 }
