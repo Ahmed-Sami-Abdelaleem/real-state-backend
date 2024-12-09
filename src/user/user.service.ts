@@ -60,4 +60,18 @@ export class UserService {
       return error;
     }
   }
+  //check if user email and password exists
+  async checkUser(email: string, password: string) {
+    try {
+      const user = await this.prisma.user.findFirst({
+        where: {
+          email: email,
+          password: password,
+        },
+      });
+      return user;
+    } catch (error) {
+      return error;
+    }
+  }
 }
