@@ -13,7 +13,7 @@ export class CreateUserDto {
   password: string;
 
   @IsDate()
-  birthday: Date;
+  birthDate: Date;
 
   @IsString()
   about: string;
@@ -23,4 +23,6 @@ export class CreateUserDto {
 
   @IsString()
   address: string;
+
+  profilePicture: string;
 }

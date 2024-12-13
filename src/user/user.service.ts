@@ -7,10 +7,9 @@ export class UserService {
   constructor(private prisma: PrismaService) {}
   create(createUserDto: CreateUserDto) {
     try {
-      const user = this.prisma.user.create({
+      return this.prisma.user.create({
         data: createUserDto,
       });
-      return user;
     } catch (error) {
       return error;
     }
@@ -35,13 +34,13 @@ export class UserService {
       return error;
     }
   }
-  update(id: string, updateUserDto: any) {
+  update(id: string, CreateUserDto: any) {
     try {
       const user = this.prisma.user.update({
         where: {
           id: id,
         },
-        data: updateUserDto,
+        data: CreateUserDto,
       });
       return user;
     } catch (error) {

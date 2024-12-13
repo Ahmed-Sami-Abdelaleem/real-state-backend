@@ -16,7 +16,6 @@ model User {
   about String?
   type String
   address String?
-  
   profilePicture String?
   wishList Wish[]
   messagesSended Message[]  @relation("messagesSended")
@@ -82,12 +81,12 @@ model Review{
 
 model Ad{
   id String @id @default(uuid())
- negotiationPrice String?
- date DateTime @default(now())
+  negotiationPrice String?
+  date DateTime @default(now())
   property Property @relation(fields: [propertyID],references: [id])
   propertyID String
-   receiver User @relation(fields: [receiverID],references: [id])
-  receiverID String
+  seller User @relation(fields: [sellerID],references: [id])
+  sellerID String
 }
 model Buy{
   id String @id @default(uuid())
