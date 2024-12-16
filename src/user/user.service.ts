@@ -6,6 +6,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 export class UserService {
   constructor(private prisma: PrismaService) {}
   create(createUserDto: CreateUserDto) {
+    createUserDto.type = 'user';
     try {
       return this.prisma.user.create({
         data: createUserDto,

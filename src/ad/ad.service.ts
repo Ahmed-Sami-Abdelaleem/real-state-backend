@@ -6,11 +6,23 @@ export class AdService {
   constructor(private prisma: PrismaService) {}
   async create(createAdDto: CreateAdDto) {
     try {
+      // Validate propertyID
+      const property = await this.prisma.property.findUnique({
+        where: { id: createAdDto.propertyID },
+      });
+      if (!property) {
+        throw new Error(
+          `Property with ID ${createAdDto.propertyID} does not exist`,
+        );
+      }
+
+      // Proceed with ad creation
       const ad = await this.prisma.ad.create({
         data: createAdDto,
       });
       return ad;
     } catch (error) {
+      console.error(error);
       throw new Error(`Failed to create ad: ${error.message}`);
     }
   }

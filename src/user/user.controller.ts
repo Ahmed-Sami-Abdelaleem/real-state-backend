@@ -14,7 +14,7 @@ import { UserService } from './user.service';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-  @Post()
+  @Post('auth/register')
   async create(@Body() createUserDto: CreateUserDto) {
     try {
       return await this.userService.create(createUserDto);
@@ -56,6 +56,17 @@ export class UserController {
       return await this.userService.remove(id);
     } catch (error) {
       return { message: `Error deleting user: ${error.message}` };
+    }
+  }
+  @Post('auth/login')
+  async findByEmail(
+    @Body('email') email: string,
+    @Body('password') password: string,
+  ) {
+    try {
+      return await this.userService.checkUser(email, password);
+    } catch (error) {
+      return { message: `Error fetching user: ${error.message}` };
     }
   }
 }
